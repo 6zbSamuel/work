@@ -1,424 +1,83 @@
 <template>
-  <v-container class="country-details" fluid>
-    <v-card class="mx-auto main-card" elevation="3">
-      <!-- 头部区域 - 调整高度和内边距 -->
-      <v-card-title class="header py-6">
-        <div class="d-flex align-center">
-          <img
-            v-if="country"
-            :src="getFlagImage(country.name)"
-            alt="Flag"
-            class="flag"
-            @error="onImageError"
-          />
-          <h1 class="text-h3 ml-6">{{ country?.name }}</h1>
-        </div>
-      </v-card-title>
-
-      <!-- 奖牌统计区域 - 增加间距和调整卡片大小 -->
-      <v-card-text v-if="country" class="medal-section py-6">
-        <v-row class="mx-2">
-          <v-col cols="12" sm="6" md="3">
-            <v-card class="medal-card gold">
-              <v-icon size="36" color="amber darken-2">mdi-medal</v-icon>
-              <div class="medal-count">{{ country.gold }}</div>
-              <div class="medal-label">Gold</div>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <v-card class="medal-card silver">
-              <v-icon size="36" color="grey lighten-1">mdi-medal</v-icon>
-              <div class="medal-count">{{ country.silver }}</div>
-              <div class="medal-label">Silver</div>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <v-card class="medal-card bronze">
-              <v-icon size="36" color="brown lighten-2">mdi-medal</v-icon>
-              <div class="medal-count">{{ country.bronze }}</div>
-              <div class="medal-label">Bronze</div>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <v-card class="medal-card total">
-              <v-icon size="36" color="blue-grey">mdi-trophy</v-icon>
-              <div class="medal-count">{{ totalMedals(country) }}</div>
-              <div class="medal-label">Total</div>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-card-text>
-
-      <!-- 运动项目区域 - 优化列表布局 -->
-      <v-card-text v-if="country" class="sports-section py-6">
-        <h2 class="text-h5 mb-6 px-4">
-          <v-icon left size="32">mdi-run</v-icon>
-          Sports
-        </h2>
-        <v-list class="px-4">
-          <v-list-item v-for="sport in country.sports" :key="sport.name" class="sport-item mb-6">
-            <v-card width="100%" class="sport-card">
-              <v-card-title class="sport-header d-flex justify-space-between align-center">
-                <span class="text-h6">{{ sport.name }}</span>
-                <div class="medals-summary">
-                  <v-chip class="mx-1" color="amber" label>
-                    <v-icon left size="small">mdi-medal</v-icon>
-                    {{ sport.gold }}
-                  </v-chip>
-                  <v-chip class="mx-1" color="grey-lighten-1" label>
-                    <v-icon left size="small">mdi-medal</v-icon>
-                    {{ sport.silver }}
-                  </v-chip>
-                  <v-chip class="mx-1" color="brown-lighten-1" label>
-                    <v-icon left size="small">mdi-medal</v-icon>
-                    {{ sport.bronze }}
-                  </v-chip>
-                </div>
-              </v-card-title>
-              
-              <v-card-text>
-                <v-list density="compact">
-                  <v-list-item v-for="(detail, index) in sport.details" 
-                              :key="index"
-                              class="medal-detail-item">
-                    <v-icon left size="small" 
-                            :color="getMedalColor(detail)">
-                      mdi-medal
-                    </v-icon>
-                    {{ detail }}
-                  </v-list-item>
-                </v-list>
-              </v-card-text>
-            </v-card>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-
-      <!-- 评论区域 - 改进评论布局 -->
-      <v-card-text class="comments-section py-6">
-        <h2 class="text-h5 mb-6 px-4">
-          <v-icon left size="32">mdi-comment-multiple</v-icon>
-          Comments
-        </h2>
-        <v-list class="px-4">
-          <v-list-item v-for="comment in comments" :key="comment.comment" class="comment-item mb-3">
-            <v-list-item-content>
-              <v-list-item-title class="text-body-1">
-                <span class="comment-author">{{ comment.author || 'Anonymous' }}:</span>
-                {{ comment.comment }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="comment-time">
-                {{ formatDate(comment.timestamp) }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-        
-        <v-form @submit.prevent="addComment" class="comment-form mt-6 px-4">
-          <v-row>
-            <v-col cols="12" sm="4">
-              <v-text-field
-                v-model="commentAuthor"
-                label="Your Name (Optional)"
-                outlined
-                dense
-                hide-details
-                class="mb-4"
-                clearable
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field
-                v-model="newComment"
-                label="Write a comment"
-                outlined
-                hide-details
-                class="comment-input"
-                append-icon="mdi-send"
-                @click:append="addComment"
-                :rules="[v => !!v || 'Comment is required']"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <div class="container">
+    <header class="header">
+      <div class="country-info">
+        <img
+          v-if="country"
+          :src="getFlagImage(country.name)"
+          alt="Flag"
+          class="flag"
+          @error="onImageError"
+        />
+        <h1>{{ country?.name }}</h1>
+      </div>
+      <button class="back-button" @click="$router.back()">
+        ← Back
+      </button>
+    </header>
+    <section v-if="country" class="medal-section">
+      <div class="medal gold">
+        <span class="medal-icon">🥇</span>
+        <span class="medal-value">{{ country.gold }}</span>
+        <span class="medal-label">Gold</span>
+        <div class="firework-spark"></div>
+        <div class="firework-spark"></div>
+        <div class="firework-spark"></div>
+        <div class="firework-spark"></div>
+        <div class="firework-spark"></div>
+        <div class="firework-spark"></div>
+        <div class="firework-spark"></div>
+        <div class="firework-spark"></div>
+      </div>
+      <div class="medal silver">
+        <span class="medal-icon">🥈</span>
+        <span class="medal-value">{{ country.silver }}</span>
+        <span class="medal-label">Silver</span>
+      </div>
+      <div class="medal bronze">
+        <span class="medal-icon">🥉</span>
+        <span class="medal-value">{{ country.bronze }}</span>
+        <span class="medal-label">Bronze</span>
+      </div>
+      <div class="medal total">
+        <span class="medal-icon">🏅</span>
+        <span class="medal-value">{{ totalMedals(country) }}</span>
+        <span class="medal-label">Total</span>
+      </div>
+    </section>
+    <section v-if="country" class="sports-section">
+      <h2>Sports</h2>
+      <ul>
+        <li v-for="sport in country.sports" :key="sport.name" class="sport-item">
+          <span class="sport-name">{{ sport.name }}</span>
+          <span class="sport-medals">{{ sport.medals }}</span>
+        </li>
+      </ul>
+    </section>
+    <section class="comments-section">
+      <h2>Comments</h2>
+      <ul>
+        <li v-for="comment in comments" :key="comment.comment" class="comment-item">
+          {{ comment.comment }}
+        </li>
+      </ul>
+      <form @submit.prevent="addComment" class="comment-form">
+        <input
+          v-model="newComment"
+          type="text"
+          placeholder="Write a comment"
+          class="comment-input"
+        />
+        <button type="submit" class="comment-button">Add Comment</button>
+      </form>
+    </section>
+  </div>
 </template>
-
-<style scoped>
-.country-details {
-  padding: 32px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  min-height: 100vh;
-  max-width: 100% !important;
-}
-
-.main-card {
-  max-width: 1618px;
-  margin: 0 auto;
-  width: 98%;
-}
-
-.header {
-  background: linear-gradient(to right, #2c3e50, #3498db);
-  color: white;
-  padding: 32px;
-  border-radius: 8px 8px 0 0;
-}
-
-.flag {
-  width: 80px;
-  height: 50px;
-  border-radius: 6px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
-}
-
-.flag:hover {
-  transform: scale(1.15);
-}
-
-.medal-card {
-  text-align: center;
-  padding: 12px;
-  height: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 8px;
-  width: 144px;
-  height: 89px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 auto;
-}
-
-.medal-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.medal-count {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 4px 0;
-}
-
-.medal-label {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 500;
-  color: #666;
-  font-size: 0.8rem;
-}
-
-.gold { 
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-}
-
-.silver { 
-  background: linear-gradient(135deg, #e2e2e2 0%, #dbdbdb 100%);
-  box-shadow: 0 4px 15px rgba(226, 226, 226, 0.3);
-}
-
-.bronze { 
-  background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
-  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
-}
-
-.total { 
-  background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
-  box-shadow: 0 4px 15px rgba(33, 147, 176, 0.3);
-}
-
-.sport-item {
-  padding: 12px 16px;
-  margin: 0 16px;
-  border-radius: 6px;
-  background-color: #f8f9fa;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.sport-item:hover {
-  background-color: #e9ecef;
-  transform: translateX(8px);
-}
-
-.sport-medals {
-  padding: 0 16px;
-  height: 32px;
-}
-
-.comment-item {
-  padding: 12px 24px;
-  margin: 0 32px;
-  border-radius: 8px;
-  border-left: 4px solid #3498db;
-  background-color: #f8f9fa;
-  transition: all 0.3s ease;
-}
-
-.comment-item:hover {
-  background-color: #e9ecef;
-  transform: translateX(8px);
-}
-
-.comment-form {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.comment-input {
-  border-radius: 8px;
-}
-
-.comment-author {
-  font-weight: 600;
-  color: #2c3e50;
-  margin-right: 8px;
-}
-
-.comment-time {
-  font-size: 0.8rem;
-  color: #666;
-  margin-top: 4px;
-}
-
-.medal-section, .sports-section, .comments-section {
-  padding: 20px 32px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* 响应式设计优化 */
-@media (max-width: 1200px) {
-  .medal-card {
-    width: 120px;
-    height: 74px;
-  }
-}
-
-@media (max-width: 960px) {
-  .country-details {
-    padding: 16px;
-  }
-
-  .main-card {
-    width: 100%;
-  }
-
-  .medal-section, .sports-section, .comments-section {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .medal-card {
-    width: 100px;
-    height: 62px;
-  }
-  
-  .header {
-    padding: 24px;
-  }
-
-  .header h1 {
-    font-size: 2rem;
-  }
-
-  .flag {
-    width: 60px;
-    height: 40px;
-  }
-
-  .medal-count {
-    font-size: 1.2rem;
-  }
-
-  .medal-label {
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .country-details {
-    padding: 8px;
-  }
-
-  .header {
-    padding: 16px;
-  }
-
-  .header h1 {
-    font-size: 1.5rem;
-  }
-
-  .medal-count {
-    font-size: 1rem;
-  }
-
-  .sport-item, .comment-item {
-    margin-bottom: 12px;
-  }
-
-  .medal-card {
-    width: 80px;
-    height: 49px;
-  }
-}
-
-.sport-card {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.sport-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.sport-header {
-  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
-  padding: 12px 20px;
-}
-
-.medals-summary {
-  display: flex;
-  align-items: center;
-}
-
-.medal-detail-item {
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-}
-
-.medal-detail-item:hover {
-  background-color: #f5f7fa;
-}
-
-.medal-card .v-icon {
-  font-size: 20px !important;
-}
-</style>
 
 <script lang="ts">
 import { defineComponent, ref, computed, unref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useOlympicStore } from '../store'
-
-interface Comment {
-  country: string
-  comment: string
-  author?: string
-  timestamp: Date
-}
 
 interface Country {
   name: string
@@ -434,7 +93,6 @@ export default defineComponent({
     const router = useRouter()
     const store = useOlympicStore()
 
-    const commentAuthor = ref('')
     const newComment = ref('')
 
     const country = computed<Country | undefined>(() => {
@@ -447,14 +105,8 @@ export default defineComponent({
 
     const addComment = () => {
       if (newComment.value.trim()) {
-        store.addComment({
-          country: route.params.country as string,
-          comment: newComment.value,
-          author: commentAuthor.value.trim() || undefined,
-          timestamp: new Date()
-        })
+        store.addComment(route.params.country as string, newComment.value)
         newComment.value = ''
-        commentAuthor.value = ''
       }
     }
 
@@ -489,35 +141,345 @@ export default defineComponent({
       console.warn(`Failed to load flag image for ${countryValue?.name}`)
     }
 
-    const formatDate = (date: Date): string => {
-      return new Intl.DateTimeFormat('zh-CN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }).format(new Date(date))
-    }
-
-    const getMedalColor = (detail: string): string => {
-      if (detail.toLowerCase().includes('gold')) return 'amber'
-      if (detail.toLowerCase().includes('silver')) return 'grey-lighten-1'
-      if (detail.toLowerCase().includes('bronze')) return 'brown-lighten-1'
-      return 'grey'
-    }
-
     return {
       country,
       comments,
-      commentAuthor,
       newComment,
       addComment,
       totalMedals,
       getFlagImage,
       onImageError,
-      formatDate,
-      getMedalColor,
     }
   },
 })
 </script>
+
+<style scoped>
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.country-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flag {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #f8f9fa;
+  transform: translateX(-2px);
+}
+
+h1 {
+  font-size: 2rem;
+  color: #212529;
+  margin: 0;
+}
+
+.medal-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.medal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.medal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.medal:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.medal:hover::before {
+  opacity: 1;
+}
+
+.medal:hover .medal-icon {
+  transform: scale(1.2) rotate(8deg);
+}
+
+.medal-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.medal-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #212529;
+  transition: transform 0.3s ease;
+}
+
+.medal:hover .medal-value {
+  transform: scale(1.1);
+}
+
+.gold:hover {
+  background: linear-gradient(145deg, white, #fff8e7);
+}
+
+.silver:hover {
+  background: linear-gradient(145deg, white, #f8f9fa);
+}
+
+.bronze:hover {
+  background: linear-gradient(145deg, white, #fff4ef);
+}
+
+.total:hover {
+  background: linear-gradient(145deg, white, #f1f8ff);
+}
+
+.gold { 
+  border-top: 4px solid #ffd700;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.silver { 
+  border-top: 4px solid #c0c0c0;
+  border-bottom: 1px solid rgba(192, 192, 192, 0.2);
+}
+
+.bronze { 
+  border-top: 4px solid #cd7f32;
+  border-bottom: 1px solid rgba(205, 127, 50, 0.2);
+}
+
+.total { 
+  border-top: 4px solid #4dabf7;
+  border-bottom: 1px solid rgba(77, 171, 247, 0.2);
+}
+
+.medal-label {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+.sports-section {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.sport-item {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-left: 4px solid #4dabf7;
+  margin-bottom: 0.75rem;
+}
+
+.comments-section {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.comment-input {
+  padding: 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.comment-button {
+  background-color: #4dabf7;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.comment-button:hover {
+  background-color: #3b8fd4;
+}
+
+/* 添加礼花动画相关的样式 */
+@keyframes firework {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes spark {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes glitter {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.gold {
+  position: relative;
+  overflow: visible !important;
+}
+
+.gold::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle, 
+    rgba(255, 215, 0, 0.8) 5%,
+    rgba(255, 183, 0, 0.6) 15%,
+    rgba(255, 123, 0, 0.4) 25%,
+    transparent 60%
+  );
+}
+
+.gold:hover::after {
+  animation: firework 1s ease-out forwards;
+}
+
+.firework-spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 创建12个不同颜色和方向的火花 */
+.gold:hover .firework-spark:nth-child(1) {
+  background: #FFD700;
+  --tx: 40px;
+  --ty: -40px;
+  animation: spark 0.8s ease-out 0.1s, glitter 0.4s ease-in-out infinite;
+}
+
+.gold:hover .firework-spark:nth-child(2) {
+  background: #FF3377;
+  --tx: -40px;
+  --ty: 40px;
+  animation: spark 0.8s ease-out 0.2s, glitter 0.4s ease-in-out infinite;
+}
+
+.gold:hover .firework-spark:nth-child(3) {
+  background: #00FF88;
+  --tx: -40px;
+  --ty: -40px;
+  animation: spark 0.8s ease-out 0.3s, glitter 0.4s ease-in-out infinite;
+}
+
+.gold:hover .firework-spark:nth-child(4) {
+  background: #44AAFF;
+  --tx: 40px;
+  --ty: 40px;
+  animation: spark 0.8s ease-out 0.4s, glitter 0.4s ease-in-out infinite;
+}
+
+/* 添加更多火花 */
+.gold::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, 
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.gold:hover::before {
+  opacity: 1;
+}
+
+/* 添加闪烁效果到奖牌图标 */
+.gold:hover .medal-icon {
+  animation: glitter 0.8s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* 添加发光效果到数值 */
+.gold:hover .medal-value {
+  animation: glitter 1s ease-in-out infinite;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+  color: #FFB700;
+}
+</style>
