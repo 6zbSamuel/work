@@ -1,16 +1,21 @@
-// src/router/index.ts
-import { createRouter, createWebHistory } from 'vue-router'
-import MedalTable from '../components/MedalTable.vue'
-import CountryDetails from '../components/CountryDetails.vue'
-
-const routes = [
-  { path: '/', component: MedalTable },
-  { path: '/country/:country', component: CountryDetails },
-]
+import { createRouter, createWebHistory } from 'vue-router';
+import MedalTable from '../views/MedalTable.vue';
+import CountryDetail from '../views/CountryDetail.vue';
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
-})
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: MedalTable,
+    },
+    {
+      path: '/country/:id',
+      name: 'country',
+      component: CountryDetail,
+    },
+  ],
+});
 
-export default router
+export default router; 
