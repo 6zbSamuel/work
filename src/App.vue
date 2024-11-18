@@ -49,6 +49,10 @@
   --background: #f5f7fa;
   --text: #2c3e50;
   --border: #e2e8f0;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-gradient-1: #f1f5f9;
+  --bg-gradient-2: #f8fafc;
 }
 
 * {
@@ -59,9 +63,10 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--background);
-  color: var(--text);
+  background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+  color: var(--text-primary);
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 .app {
@@ -69,7 +74,8 @@ body {
 }
 
 header {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  box-shadow: 0 4px 20px rgba(44, 62, 80, 0.15);
   color: white;
   padding: 2rem;
   text-align: center;
@@ -84,8 +90,19 @@ header::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 70%);
   pointer-events: none;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  opacity: 0.3;
 }
 
 h1 {
@@ -153,14 +170,15 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 4px;
+  opacity: 0.6;
 }
 
 .bar {
-  height: 4px;
+  height: 3px;
   width: 40px;
   border-radius: 2px;
   animation: barPulse 2s ease-in-out infinite;
-  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  box-shadow: 0 0 8px rgba(255,255,255,0.1);
 }
 
 .olympic-dots {
@@ -168,38 +186,34 @@ h1 {
   justify-content: center;
   gap: 8px;
   margin-top: 0.5rem;
+  opacity: 0.6;
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   animation: dotPulse 1.5s ease-in-out infinite;
 }
 
 .blue { 
-  background-color: var(--olympic-blue);
-  animation-delay: 0s;
+  background-color: rgba(0, 133, 199, 0.7);
 }
 
 .yellow { 
-  background-color: var(--olympic-yellow);
-  animation-delay: 0.2s;
+  background-color: rgba(244, 195, 0, 0.7);
 }
 
 .black { 
-  background-color: var(--olympic-black);
-  animation-delay: 0.4s;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .green { 
-  background-color: var(--olympic-green);
-  animation-delay: 0.6s;
+  background-color: rgba(0, 159, 61, 0.7);
 }
 
 .red { 
-  background-color: var(--olympic-red);
-  animation-delay: 0.8s;
+  background-color: rgba(223, 0, 36, 0.7);
 }
 
 @keyframes gradient {
@@ -217,30 +231,30 @@ h1 {
 @keyframes barPulse {
   0% {
     transform: scaleX(1);
-    opacity: 0.8;
+    opacity: 0.5;
   }
   50% {
     transform: scaleX(1.2);
-    opacity: 1;
+    opacity: 0.7;
   }
   100% {
     transform: scaleX(1);
-    opacity: 0.8;
+    opacity: 0.5;
   }
 }
 
 @keyframes dotPulse {
   0% {
     transform: scale(1);
-    opacity: 0.8;
+    opacity: 0.5;
   }
   50% {
     transform: scale(1.5);
-    opacity: 1;
+    opacity: 0.7;
   }
   100% {
     transform: scale(1);
-    opacity: 0.8;
+    opacity: 0.5;
   }
 }
 
@@ -253,20 +267,20 @@ h1 {
   right: 0;
   bottom: 0;
   border-radius: inherit;
-  box-shadow: 0 0 15px currentColor;
-  opacity: 0.5;
+  box-shadow: 0 0 10px currentColor;
+  opacity: 0.3;
   animation: glowPulse 2s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
   0% {
-    opacity: 0.3;
+    opacity: 0.2;
   }
   50% {
-    opacity: 0.6;
+    opacity: 0.4;
   }
   100% {
-    opacity: 0.3;
+    opacity: 0.2;
   }
 }
 

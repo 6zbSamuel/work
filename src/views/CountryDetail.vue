@@ -1,5 +1,11 @@
 <template>
   <div class="country-detail" v-if="country">
+    <div class="back-button-container">
+      <button class="back-button" @click="goBack">
+        <i class="fas fa-arrow-left"></i>
+        Back to Medal Table
+      </button>
+    </div>
     <div class="hero-section glass">
       <div class="hero-content">
         <div class="flag-container">
@@ -124,7 +130,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useMedalStore } from '../stores/medalStore';
 import SportDetail from '../components/SportDetail.vue';
 import type { SportMedal } from '../types';
@@ -132,6 +138,7 @@ import type { SportMedal } from '../types';
 const route = useRoute();
 const store = useMedalStore();
 const newComment = ref('');
+const router = useRouter();
 
 const country = computed(() => 
   store.countries.find(c => c.id === Number(route.params.id))
@@ -161,6 +168,12 @@ const selectedSport = ref<SportMedal | null>(null);
 
 const showSportDetail = (sport: SportMedal) => {
   selectedSport.value = sport;
+};
+
+const goBack = () => {
+  router.push({ name: 'home' }).catch(() => {
+    window.location.href = '/';
+  });
 };
 </script>
 
@@ -497,5 +510,49 @@ button:hover {
   .content-grid {
     grid-template-columns: 1fr;
   }
+
+  .back-button-container {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .back-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+.back-button-container {
+  position: sticky;
+  top: 2rem;
+  left: 2rem;
+  margin-bottom: 1rem;
+  z-index: 100;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.5rem;
+  background: var(--olympic-blue);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.back-button i {
+  font-size: 1.1rem;
 }
 </style> 

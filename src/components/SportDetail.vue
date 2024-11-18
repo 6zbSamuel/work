@@ -96,14 +96,65 @@ const getMedalLabel = (type: string) => {
 };
 
 const getEventDescription = (sport: string) => {
-  // 这里可以添加更多运动项目的描述
   const descriptions: { [key: string]: string } = {
-    'Table Tennis': 'An intense match showcasing exceptional skill and precision, with rapid exchanges and strategic gameplay that kept spectators on the edge of their seats.',
-    'Swimming': 'A thrilling race that came down to the final meters, with athletes pushing their limits in pursuit of Olympic glory.',
-    'Athletics': 'A display of pure athletic excellence, breaking records and showcasing the pinnacle of human performance.',
-    // 可以继续添加其他运动项目的描述
+    'Table Tennis': 'A high-intensity match featuring rapid exchanges and precise ball control. Players demonstrate exceptional skill in serves, returns, and tactical gameplay, making table tennis one of China\'s strongest Olympic events.',
+    
+    'Swimming': 'Athletes compete in a state-of-the-art aquatics center, pushing the boundaries of human performance in the water. Events range from explosive sprints to endurance-testing distance races.',
+    
+    'Athletics': 'Track and field events showcase raw speed, power, and endurance. Athletes compete in various disciplines including sprinting, jumping, throwing, and distance running.',
+    
+    'Diving': 'Competitors perform complex acrobatic maneuvers from various heights, combining grace, precision, and athleticism. Judges evaluate technique, execution, and entry into the water.',
+    
+    'Weightlifting': 'Athletes demonstrate incredible strength and technique in two Olympic lifts: the snatch and the clean & jerk. Each competitor gets three attempts at each lift.',
+    
+    'Gymnastics': 'A combination of strength, flexibility, and artistic expression. Athletes perform routines on various apparatus, showcasing both technical difficulty and graceful execution.',
+    
+    'Basketball': 'Teams compete in fast-paced matches requiring teamwork, skill, and strategy. The sport combines athletic prowess with tactical team play.',
+    
+    'Judo': 'A martial art emphasizing throws and grappling techniques. Athletes compete in weight categories, demonstrating both physical skill and strategic thinking.',
+    
+    'Fencing': 'A tactical combat sport where athletes score points using three types of weapons: foil, épée, and sabre. Requires quick reflexes and strategic thinking.',
+    
+    'Cycling': 'Athletes compete in various disciplines including track cycling, road racing, and BMX. Events test speed, endurance, and tactical awareness.',
+    
+    'Rowing': 'Teams and individuals race over a 2000m course, demonstrating strength, endurance, and perfect synchronization in various boat classes.',
+    
+    'Badminton': 'Fast-paced rallies and strategic play characterize this racquet sport. Players demonstrate agility, power, and precise shot control.',
+    
+    'Wrestling': 'Athletes compete in freestyle and Greco-Roman styles, combining strength, technique, and tactical skill in weight-class competitions.',
+    
+    'Archery': 'Competitors demonstrate precision and mental focus, shooting arrows at targets 70 meters away in individual and team events.',
+    
+    'Boxing': 'Athletes compete in weight divisions, showcasing technical skill, strategy, and conditioning in three-round bouts.',
+    
+    'Taekwondo': 'A Korean martial art featuring dynamic kicking techniques. Athletes score points through controlled strikes to permitted target areas.',
+    
+    'Climbing': 'Athletes compete in three disciplines: speed climbing, bouldering, and lead climbing, testing different aspects of climbing ability.',
+    
+    'Water Polo': 'A physically demanding team sport combining swimming, throwing, and tactical play. Teams compete in a deep pool, requiring exceptional stamina.',
+    
+    'Hockey': 'Field hockey teams compete in fast-paced matches requiring stick skills, teamwork, and tactical awareness.',
+    
+    'Marathon': 'The ultimate test of endurance, athletes race over 42.195 kilometers through the host city streets.',
+    
+    'Shooting': 'Athletes demonstrate exceptional precision and mental control in various rifle, pistol, and shotgun events.',
+    
+    'Sailing': 'Competitors harness wind and waves in various boat classes, combining technical skill with tactical decision-making.',
+    
+    'Karate': 'Athletes compete in kata (forms) and kumite (sparring) events, demonstrating traditional techniques with modern athletic application.',
+    
+    'Tennis': 'Players compete in singles and doubles events on hard courts, showcasing power, skill, and endurance in best-of-three set matches.',
+    
+    'Rugby Sevens': 'A fast-paced version of rugby with seven players per team, featuring explosive runs, tactical kicks, and team coordination.',
+    
+    'Canoeing': 'Athletes race in sprint and slalom events, demonstrating power, technique, and water reading skills.',
+    
+    'Mountain Biking': 'Cyclists navigate challenging off-road courses, combining technical skill with physical endurance.',
+    
+    'Long Distance Running': 'Athletes compete in track events from 5000m to 10000m, demonstrating endurance and tactical racing ability.'
   };
-  return descriptions[sport] || 'A spectacular Olympic event demonstrating the highest level of athletic achievement.';
+  
+  return descriptions[sport] || 'An Olympic event showcasing the highest level of athletic achievement and competitive spirit.';
 };
 </script>
 
