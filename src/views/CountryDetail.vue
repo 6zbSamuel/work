@@ -171,7 +171,12 @@ const showSportDetail = (sport: SportMedal) => {
 };
 
 const goBack = () => {
-  router.push({ name: 'home' }).catch(() => {
+  router.push({ name: 'home' }).then(() => {
+    // 跳转成功后刷新页面
+    window.location.reload();
+  }).catch((error) => {
+    console.error('路由跳转失败:', error);
+    // 如果路由跳转失败，直接刷新当前页面
     window.location.href = '/';
   });
 };
